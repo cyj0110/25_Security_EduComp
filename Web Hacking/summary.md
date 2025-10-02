@@ -19,9 +19,9 @@
 
 - 현재 사용자(혹은 지정한 사용자)의 UID, GID, 소속 그룹들을 보여줌.
 
-**사용법**: id 또는 id username
+- **사용법**: id 또는 id username
 
-**예시 출력**
+- **예시 출력**
 ```bash
 $ id
 uid=1000(kali) gid=1000(kali) groups=1000(kali),4(adm),27(sudo)
@@ -34,9 +34,9 @@ uid=1000(kali) gid=1000(kali) groups=1000(kali),4(adm),27(sudo)
 
 - 현재 작업 중인 절대 경로(현재 디렉토리) 출력
 
-**사용법**: pwd
+- **사용법**: pwd
 
-**예시**
+- **예시**
 ```bash
 $ pwd
 /home/kali
@@ -48,7 +48,7 @@ $ pwd
 
 - 디렉토리의 파일/폴더 목록을 나열
 
-**자주 쓰는 옵션**
+- **자주 쓰는 옵션**
 ```
 ls : 기본 목록
 ls -a : 숨김파일(.으로 시작) 포함
@@ -60,7 +60,7 @@ ls -al 또는 ls -la : 숨김파일 포함 + 상세 출력
 
 ### 4) ls -al시 나오는 권한
 
-**예시 한 줄:**
+- **예시 한 줄:**
 ```bash
 -rw-r--r--  1 kali users  4096 Sep 29 10:00 example.txt
 ```
@@ -89,7 +89,7 @@ example.txt — 파일 이름
 
 - 시스템 사용자들의 홈 디렉토리들이 모여 있는 기본 위치
 
-**흔한 구조**:
+- **흔한 구조**:
 ```
 /home/
   ├─ alice/    (alice의 홈)
@@ -106,13 +106,13 @@ example.txt — 파일 이름
 
 - 현재 사용자가 root(관리자) 권한의 로그인 쉘로 전환
 
-**동작**
+- **동작**
 ```
 sudo : 명령을 다른 사용자(기본 root) 권한으로 실행
 su - : 해당 사용자(root)의 로그인 환경(환경 변수, 홈 디렉토리 등)을 로드한 쉘 실행
 합치면 sudo su -는 root로 완전하게 로그인하는 것과 동일
 ```
-**사용 예**
+- **사용 예**
 ```bash
 $ sudo su -
 # whoami
@@ -128,39 +128,39 @@ root
 
 ### 1) sudo apt update
 
-패키지 목록(업데이트 가능한 패키지 정보)을 최신으로 갱신
+- 패키지 목록(업데이트 가능한 패키지 정보)을 최신으로 갱신
 
 ### 2) sudo dhclient
 
-DHCP 서버로부터 IP 주소 자동 할당
+- DHCP 서버로부터 IP 주소 자동 할당
 
 ### 3) sudo apt install vsftpd
 
-FTP 서버 프로그램(vsftpd) 설치
+- FTP 서버 프로그램(vsftpd) 설치
 
 ### 4) sudo apt search vsftp
 
-패키지 목록에서 vsftp 관련 패키지 검색
+- 패키지 목록에서 vsftp 관련 패키지 검색
 
 ### 5) sudo apt show vsftpd
 
-vsftpd 패키지의 상세 정보 확인 (버전, 설명, 의존성 등)
+- vsftpd 패키지의 상세 정보 확인 (버전, 설명, 의존성 등)
 
 ### 6) sudo apt list --installed
 
-설치된 패키지 전체 목록 출력
+- 설치된 패키지 전체 목록 출력
 
 ### 7) sudo apt list --installed | grep ftp
 
-설치된 패키지 중 ftp 관련된 것만 필터링
+- 설치된 패키지 중 ftp 관련된 것만 필터링
 
 ### 8) sudo apt remove vsftpd
 
-vsftpd 패키지 제거 (설정파일은 남음)
+- vsftpd 패키지 제거 (설정파일은 남음)
 
 ### 9) sudo apt install fonts-nanum
 
-한글 글꼴 나눔폰트 설치
+- 한글 글꼴 나눔폰트 설치
 
 ---
 
