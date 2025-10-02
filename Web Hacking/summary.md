@@ -28,7 +28,6 @@ uid=1000(kali) gid=1000(kali) groups=1000(kali),4(adm),27(sudo)
 ```
 **의미**: uid=사용자ID(사용자이름), gid=기본그룹, groups=소속 그룹 목록
 
----
 
 ### 2) pwd
 
