@@ -166,4 +166,59 @@ vsftpd 패키지 제거 (설정파일은 남음)
 
 ## 칼리리눅스 명령어 기본 - 사용자 추가 및 권한 부여
 
+### 1) sudo useradd -d /home/kali2 -m kali2
+```
+useradd : 새로운 시스템 사용자 계정 생성(저수준).
+-d /home/kali2 : 홈 디렉터리 경로를 /home/kali2로 지정.
+-m : 지정한 홈 디렉터리를 만들어 줌(존재하지 않으면 생성).
+kali2 : 생성할 사용자 이름.
+```
+- 주의: useradd는 보통 암호를 설정하지 않음 → 다음에 sudo passwd kali2로 비밀번호 설정 필요.
 
+### 2) sudo usermod -a -G sudo kali2 
+```
+usermod : 기존 사용자 수정.
+-G sudo : sudo 그룹에 추가(대상 그룹 지정).
+-a : append — 기존 그룹 목록을 덮어쓰지 않고 추가.
+```
+- 주의: a 없이 -G만 쓰면 사용자가 소속된 그룹 목록이 해당 옵션으로 대체되어 버릴 수 있음
+
+- 결과: kali2가 sudo 그룹의 멤버가 되면, 보통 sudo <command>로 관리자 권한을 쓸 수 있음 (배포판 설정에 따라 다름—우분투 계열은 sudo 그룹이 관리자 권한).
+
+### 3) sudo chsh -s /bin/bash kali2
+```
+chsh : 사용자 계정의 로그인 셸(login shell) 변경.
+-s /bin/bash : 사용할 셸 경로를 /bin/bash로 설정.
+kali2 : 대상 사용자.
+```
+- 변경 대상 셸은 /etc/shells에 등록된 경로여야 함(그렇지 않으면 실패할 수 있음).
+
+- 셸 변경은 다음 로그인부터 적용(또는 su - kali2로 즉시 확인 가능).
+
+### 4) sudo passwd kali2
+
+- useradd로 계정 만들고 나면 비밀번호가 없거나 잠긴 상태일 수 있음.
+
+- passwd로 비밀번호 지정(또는 잠금 해제).
+
+### 5) 배쉬(Bash) vs 제트(Zsh) — 간단 비교
+
+- Bash (Bourne Again SHell)
+```
+널리 사용되고 대부분 시스템에 기본으로 설치되어 있음.
+스크립트 호환성이 좋고 학습/디버깅이 쉬움.
+안정적이고 표준적.
+```
+
+- Zsh (Z shell)
+```
+더 풍부한 기능(향상된 탭 완성, 글로브 확장, 테마/플러그인 풍부).
+oh-my-zsh 같은 프레임워크로 생산성/시각적 편의성 향상 가능.
+기본 설치는 안 되어 있을 수 있으므로 sudo apt install zsh 필요.
+셸을 바꾸려면 chsh -s /bin/zsh kali2 (그리고 /etc/shells에 /bin/zsh가 있어야 함).
+```
+
+- 추천(간단): 초반엔 bash로 익숙해지는 걸 추천 (스크립트/문제 해결에 유리).
+
+
+---
