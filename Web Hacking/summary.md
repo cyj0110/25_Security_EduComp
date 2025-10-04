@@ -220,7 +220,6 @@ kali2 : 대상 사용자.
 
 - 추천(간단): 초반엔 bash로 익숙해지는 걸 추천 (스크립트/문제 해결에 유리).
 
-
 ---
 
 ## 칼리리눅스 명령어 기본 - vim 파일편집
@@ -261,3 +260,90 @@ vim test2.txt
 
 ## 칼리리눅스 명령어 기본 - find, locate 명령어
 
+### 1) locate ftp [-c]
+
+- 파일 DB에서 ftp가 들어간 경로 빠르게 검색
+
+- -c : 결과 개수만 출력
+
+- DB 기반 → 최신화 필요: updatedb(locate가 사용하는 파일 경로 DB 갱신)
+
+- man locate : locate 사용법 매뉴얼 확인
+
+### 2) find
+```
+find 명령어(실제 파일시스템에서 직접 검색)
+
+find / -name "ftp"
+-> 루트(/) 아래에서 이름이 정확히 "ftp"인 파일 검색
+
+find / -name "*ftp*"
+-> 이름에 ftp가 포함된 모든 파일 검색
+
+find / -type d -name "ftp"
+-> 이름이 "ftp"인 디렉터리 검색
+
+find /home -user kali -name "*.txt"
+-> /home 밑에서 kali 사용자가 가진 .txt 파일 검색
+
+find / -mtime +7 -name "*.txt"
+-> 7일 이전에 수정된 .txt 파일 검색
+
+find / -size +10M -name "*.txt"
+-> 크기가 10MB 이상인 .txt 파일 검색
+```
+
+### 3) fdisk -l
+
+- 디스크 파티션/용량 정보 확인 (root 권한 필요)
+
+---
+
+## 칼리리눅스 명령어 기본 - dpkg 패키지 관리
+
+### 1) apt와 dpkg 차이
+```
+**dpkg**
+저수준 패키지 관리 도구
+.deb 패키지를 직접 설치/제거/조회
+의존성 자동 해결 X (수동으로 처리해야 함)
+
+**apt**
+고수준 패키지 관리 도구
+dpkg를 내부적으로 사용
+```
+```
+dpkg -l
+dpkg -L apache2
+dpkg -s vsftpd
+dpkg -r vsftpd
+dpkg -P vsftpd
+dpkg -I
+dpkg -i 
+```
+
+/usr/share 
+/usr/sbin 
+/etc
+보통 담기는 파일들 종류?
+
+---
+
+## OSINT를 활용한 정보 수집 단계 - whois, dns 정보 확인
+
+OSINT?
+
+offensive 관점
+
+defensive 관점
+
+whois -H 
+
+DNS 정보 수집: fierce
+fierce -dns *.google.com
+
+DNS 정보 수집: recon-ng
+
+한 가지 도구를 100% 신뢰할 수 없음
+
+여러가지 취약점 분석 도구를 사용하며 비교/분석 하면서 명확하게 찾아낼 필요가 있음.
