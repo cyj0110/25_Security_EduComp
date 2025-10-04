@@ -270,7 +270,7 @@ vim test2.txt
 
 - man locate : locate 사용법 매뉴얼 확인
 
-### 2) find
+### 2) find 주요 명령어
 ```
 find 명령어(실제 파일시스템에서 직접 검색)
 
@@ -303,47 +303,110 @@ find / -size +10M -name "*.txt"
 
 ### 1) apt와 dpkg 차이
 ```
-**dpkg**
+[dpkg]
 저수준 패키지 관리 도구
 .deb 패키지를 직접 설치/제거/조회
 의존성 자동 해결 X (수동으로 처리해야 함)
 
-**apt**
+[apt]
 고수준 패키지 관리 도구
 dpkg를 내부적으로 사용
-```
-```
-dpkg -l
-dpkg -L apache2
-dpkg -s vsftpd
-dpkg -r vsftpd
-dpkg -P vsftpd
-dpkg -I
-dpkg -i 
+저장소에서 패키지를 내려받고, 의존성 자동 해결 가능
 ```
 
-/usr/share 
-/usr/sbin 
-/etc
-보통 담기는 파일들 종류?
+### 2) dpkg 주요 명령어
+```
+dpkg -l
+-> 설치된 패키지 목록 출력
+
+dpkg -L apache2
+-> 특정 패키지가 설치한 파일 경로 목록 확인
+
+dpkg -s vsftpd
+-> 특정 패키지의 상태/정보 확인
+
+dpkg -r vsftpd
+-> 패키지 제거 (설정 파일은 남음)
+
+dpkg -P vsftpd
+-> 패키지 완전 제거 (설정 파일까지 삭제)
+
+dpkg -I
+-> .deb 파일의 정보 조회 (설치 X, 내용만 확인)
+
+dpkg -i
+-> .deb 파일 설치
+```
+
+### 3) 주요 디렉터리 용도
+
+**/usr/share**
+
+-공용 데이터 (아이콘, 문서, 매뉴얼, 지역화 파일 등)
+
+-실행파일은 아님, 주로 읽기 전용 리소스
+
+**/usr/sbin**
+
+- 시스템 관리용 실행 파일 (관리자 명령어: apache2, vsftpd 등)
+
+**/etc**
+
+- 시스템/프로그램 설정 파일 저장 위치
+
+- 예: /etc/passwd, /etc/ssh/sshd_config, /etc/apache2/
 
 ---
 
 ## OSINT를 활용한 정보 수집 단계 - whois, dns 정보 확인
 
-OSINT?
+### 1) OSINT(Open Source Intelligence)
 
-offensive 관점
+- 공개된 정보(오픈소스 데이터)를 수집·분석해 유용한 인텔리전스로 활용하는 것
 
-defensive 관점
+- 대상: 웹사이트, 도메인, SNS, 검색엔진, 공개 DB 등
 
-whois -H 
+### 2) 관점별 OSINT 활용
 
-DNS 정보 수집: fierce
-fierce -dns *.google.com
+**offensive 관점(공격자 입장)**
 
-DNS 정보 수집: recon-ng
+- 공격 전에 목표 시스템/조직의 정보를 수집 → 취약점 찾기
+
+- 예: 도메인 정보, 서버 IP, 이메일, 네트워크 구조, 직원 SNS 정보
+
+**defensive 관점(방어자 입장)**
+
+- 공격자가 노릴 수 있는 공개된 정보 노출을 줄이고 관리
+
+- 예: DNS 설정 점검, WHOIS 정보 보호, 불필요한 서비스/포트 차단
+
+### 3) 주요 명령어 & 도구
+
+**whois -H domain.com**
+
+- 도메인 등록자, 네임서버, 만료일 등 조회
+
+- -H : 긴 출력(약관/경고문) 숨기고 깔끔하게 보기
+
+**DNS 정보 수집**
+
+[fierce]
+
+- 도메인 기반 DNS 수집/브루트포스 도구
+
+- 예: fierce -dns *.google.com → 구글 관련 서브도메인 수집
+
+[recon-ng]
+
+- OSINT 프레임워크 (모듈 기반)
+
+- 다양한 API/데이터 소스로 자동화된 정보 수집
 
 한 가지 도구를 100% 신뢰할 수 없음
 
 여러가지 취약점 분석 도구를 사용하며 비교/분석 하면서 명확하게 찾아낼 필요가 있음.
+
+---
+
+## OSINT를 활용한 정보 수집 단계 - 해킹 할 때 서브도메인(subdomain) 검색 방법 및 중요성
+
