@@ -410,3 +410,180 @@ dpkg -i
 
 ## OSINT를 활용한 정보 수집 단계 - 해킹 할 때 서브도메인(subdomain) 검색 방법 및 중요성
 
+### 1) 검색 연산자 (Google 검색에서)
+
+**site:google.com -site:www.google.com**
+
+- -> google.com 도메인에 속하지만 www.google.com은 제외한 결과 검색.
+
+**filetype:xls**
+
+- -> 파일 형식이 .xls (엑셀 97-2003)인 결과만 검색.
+
+### 2) Kali에서 쓰는 DNS / 서브도메인 수집 도구
+```
+dig — DNS 조회(레코드 직접 질의).
+host — 간단한 DNS 조회 도구.
+nslookup — 전통적 DNS 조회(상호작용 모드 가능).
+dnsenum — 서브도메인/NS/존 전송 시도 등 자동화 수집.
+dnsrecon — 다양한 DNS 레코드 수집·열거 기능.
+fierce — 서브도메인 브루트·열거 도구.
+amass — 대규모 서브도메인 수집·연결지도 생성 (외부 데이터 연동).
+sublist3r — 서브도메인 열거(빠르고 간단).
+massdns — 대량 DNS 쿼리/검증(속도 위주).
+nmap --script dns-* — DNS 관련 스크립트로 정보 수집/검증.
+(도구 선택은 목적·속도·정확도에 따라 달라짐.)
+```
+
+### 3) DNSdumpster.com
+
+- 온라인 DNS/호스트 매핑 시각화 서비스.
+
+- 도메인 입력하면 공개된 네임서버, 서브도메인, 호스트 정보를 시각적으로 보여줌.
+
+- 빠른 초기 정찰에 유용(단, 결과는 공개/캐시된 정보 한정).
+
+### 4) “subdomain bug hunting” (서브도메인 버그헌팅)
+
+- **목적:** 허가된 범위(버그바운티/내부 점검)에서 서브도메인들을 찾아서 취약점·노출된 서비스를 발견.
+
+- **흔한 타깃:** 미노출 관리 패널, 오래된 앱, 취약한 API 등.
+
+- 도구 + CT 로그(crt.sh 등) + 검색 연산자 조합으로 탐색.
+
+### 5) Facebook Tools — CT (Certificate Transparency)
+
+- **의미:** 메타(Facebook)가 제공하는 Certificate Transparency(CT) 모니터링 툴.
+
+- **기능:** 도메인에 대해 발급된 TLS 인증서 로그를 검색하고, 새로 발급되는 인증서에 대해 알림(구독) 설정 가능 -> 위조/오발급된 인증서 탐지에 도움.
+
+---
+
+## OSINT를 활용한 정보 수집 단계 - OSINT의 대표적인 사이트 urlscan을 이용한 홈페이지 정보 획득
+
+### 1) urlscan.io
+```
+웹페이지를 브라우저처럼 실시간 스캔하여 HTML, 리소스(이미지/JS/CSS), 요청·응답 헤더, 스크린샷, 도메인/서브도메인 관계 등을 저장·시각화해주는 온라인 서비스.
+
+[주요 기능]
+URL 제출 → 페이지 렌더링 결과(네트워크 호출, 외부 도메인 호출, 스크린샷) 확인
+공개 스캔 인덱스에서 키워드/필드로 검색 가능
+API 제공(자동화 검색/분석)
+
+[활용(Offensive / Defensive)]
+Offensive: 타깃 페이지의 외부 리소스(추적·서드파티 스크립트), 잠재적 민감정보 노출 파악.
+Defensive: 사이트에 포함된 외부 스크립트·서드파티 호출 검증, 피싱·리디렉션 탐지, 콘텐츠 변경 모니터링.
+
+[예시 (검색식)]
+page.domain:"example.com" — example.com 도메인에서 스캔된 페이지들 필터링
+url:"https://example.com/login" — 특정 URL로 스캔된 결과 검색
+
+(웹 UI 또는 API의 검색 필드에 위와 같은 쿼리를 넣어 사용)
+```
+
+### 2) page.domain="..." (검색식 의미)
+```
+urlscan 등 검색 인터페이스에서 사용하는 필드 기반 쿼리 표현. page.domain:"example.com" 은 스캔된 페이지의 도메인이 example.com인 항목만 찾겠다는 뜻.
+
+[응용 예]
+page.domain:"example.com" AND page.statuscode:200 — 응답 코드 200인 결과만 보기
+page.domain:"example.com" AND page.screenshot:true — 스크린샷이 있는 스캔만 필터링
+```
+
+### 3) Censys
+```
+인터넷 상의 호스트(또는 인증서·서비스)를 대규모로 스캔·인덱싱해 검색·분석할 수 있게 해주는 플랫폼(검색 엔진 + 데이터베이스). SSL/TLS 인증서, 서비스 포트, 응답 헤더, 운영체제 정보 등을 제공.
+
+[주요 기능]
+IPv4/IPv6 호스트 검색, 서비스별(HTTP, SSH 등) 검색
+TLS 인증서 인덱스(발급된 인증서 검색)
+쿼리언어로 정교한 필터링 가능, API 제공
+
+[활용(Offensive / Defensive)]
+Offensive: 특정 포트·서비스가 공개된 호스트 식별(취약 버전 탐지 등).
+Defensive: 자사 자산(공개 IP, 노출된 서비스, 잘못된 인증서 등) 모니터링 및 식별.
+
+[예시 쿼리]
+services.service_name: "http" AND services.http.response.headers.server: "nginx" — HTTP 서비스 중 서버 헤더가 nginx인 호스트
+parsed.extensions.subject_alt_name.dns_names: "example.com" — 인증서의 SAN에 example.com이 포함된 항목
+
+[접근]
+웹 UI로 탐색, API/키로 자동화 조회 가능(쿼리·결과 다운로드 지원).
+```
+
+---
+
+## OSINT를 활용한 정보 수집 단계 - archive 사이트 활용과 robots 파일 이해
+
+### 1) Internet Archive / Wayback Machine
+
+- 과거 웹페이지의 스냅샷(아카이브)을 저장·검색하는 서비스. archive.org가 운영.
+
+- **사용처:** 사이트의 과거 버전 확인, 증거 보존, 리서치 등.
+
+- **Wayback에서 스냅샷을 삭제하려면 (요약 절차)**
+
+1. 자신이 사이트 소유자라면
+
+- 우선 원본 사이트에서 문제되는 페이지(또는 민감정보)를 삭제하거나 수정.
+
+- 사이트에 robots.txt 또는 <meta name="robots" content="noindex,nofollow"> 등을 설정해 향후 크롤링/캐시를 막음(검색엔진·아카이브 차단용).
+
+2. **Internet Archive에 삭제 요청 제출**
+
+- Archive의 'contact / takedown' 또는 'remove a capture' 양식으로 구체적 스냅샷 URL, 삭제 이유, 소유 증명(가능하면)을 제출.
+
+- 개인정보·저작권·법적 문제 등 정당한 사유가 있으면 처리 가능.
+
+3. **법적·긴급 사유**가 있으면 해당 근거(documentation)를 함께 제출하면 빠를 수 있음(예: 개인정보 노출, 법적 판결 등).
+
+4. **결과 대기**: Archive 운영 정책·검토 절차에 따라 처리. (정책·절차는 수시로 바뀔 수 있으니 archive.org의 공식 도움말/양식 참고)
+
+### 2) robots.txt
+
+- 사이트 루트(/robots.txt)에 크롤러가 접근해 어떤 경로를 수집해도 되는지 알려주는 표준 텍스트 파일.
+
+```makefile
+User-agent: *
+Disallow: /private/
+```
+
+- 효과: 대부분의 좋은 크롤러(검색엔진·일부 아카이브)는 이를 존중해서 해당 경로를 수집하지 않음.
+
+- 주의: 모든 크롤러가 강제적으로 따르는 것은 아니며(악성 스캐너는 무시 가능), 이미 수집된 스냅샷을 자동으로 삭제해주진 않음 — 사후 조치(제출 요청)가 필요함.
+
+
+### 3) 구글의 '저장된 페이지'(캐시) 및 유사 페이지
+
+- 구글 저장된 페이지(캐시): 구글이 마지막으로 인덱싱했을 때의 페이지 사본.
+
+- **삭제/갱신 방법:**
+
+- 사이트 소유자: 페이지에 noindex 메타태그 추가 → Google Search Console에서 URL 제거(Removals) 도구로 임시 제거 요청.
+
+- 개인정보·법적 이유: Google의 개인정보 삭제 요청 양식 사용.
+
+- **유사한 페이지(Similar pages):** 검색 결과에서 특정 페이지와 유사한(내용·구조가 비슷한) 페이지를 보여주는 기능 — 직접적인 삭제 수단은 아님.
+
+### 4) httrack
+
+- 웹사이트 전체(또는 일부)를 로컬로 복제(다운로드) 하는 도구 — 오프라인 열람 또는 분석용.
+
+```
+httrack "https://example.com" -O /path/to/save "+*.example.com/*" -v
+
+-O : 저장 위치 지정
+"+*.example.com/*" : example.com 내부 링크만 포함
+-v : 자세한 로그(verbosity)
+```
+
+- 중요 옵션(주의):
+
+- --robots=0 : robots.txt 무시하고 강제로 다운 → 비윤리적/불법적일 수 있음(절대 무단으로 사용 금지).
+
+- 윤리: 타사 서버에 과도한 부하를 주지 않도록 --wait·--limit-rate 같은 옵션으로 요청 속도를 조절하거나, 사전 허가를 받아 사용하여야 함.
+
+---
+
+## OSINT를 활용한 정보 수집 단계 - 구글(google) 해킹 이해 (1)
+
