@@ -521,7 +521,7 @@ parsed.extensions.subject_alt_name.dns_names: "example.com" — 인증서의 SAN
 
 - **사용처:** 사이트의 과거 버전 확인, 증거 보존, 리서치 등.
 
-- **Wayback에서 스냅샷을 삭제하려면 (요약 절차)**
+**Wayback에서 스냅샷을 삭제하려면 (요약 절차)**
 
 1. 자신이 사이트 소유자라면
 
