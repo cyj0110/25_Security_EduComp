@@ -587,3 +587,55 @@ httrack "https://example.com" -O /path/to/save "+*.example.com/*" -v
 
 ## OSINT를 활용한 정보 수집 단계 - 구글(google) 해킹 이해 (1)
 
+### 1) site:google.com -site:www.google.com
+```
+google.com 도메인에 속하는 페이지들 중에서 www.google.com(즉 www 서브도메인)은 제외하고 검색하라는 뜻.
+
+[용도/예시 결과]
+mail.google.com, accounts.google.com, developers.google.com 같은 비-www 서브도메인 결과를 볼 때 유용.
+
+[비고(정확성)]
+site: 연산자는 도메인/서브도메인 기반 필터링. -site:는 제외 연산자.
+
+[예시 (같은 뜻, 더 구체적)]
+site:google.com -site:www.google.com "login" → non-www 서브도메인 중 login 포함 페이지 찾기
+```
+
+### 2) allinurl:trello.com "Username:" "Password:" "Type:"
+```
+URL(주소)에 특정 단어들이 모두 포함된 결과만 보여달라는 구문. 작성하신 형태는 URL에 trello.com이 포함되고, 페이지 내에서 "Username:" "Password:" "Type:" 같은 문구를 포함하는 페이지를 찾으려는 시도.
+
+[실제 동작(주의)]
+allinurl: 뒤에 오는 단어들은 모두 URL(주소)에 포함되어야 검색됨.
+"Username:" 등은 따옴표로 감싼 본문(페이지 내용) 검색어와 결합하면 기대한 대로 동작하지 않을 수 있음.
+
+[더 정확한 쿼리(권장)]
+site:trello.com intext:"Username:" intext:"Password:" intext:"Type:"
+-> 트렐로 도메인 내에서 본문에 해당 키워드들이 들어간 페이지를 찾음.
+
+또는 inurl:trello.com intext:"Username:" 등으로 조합 가능.
+
+[의도(보안적 의미)]
+이런 검색은 공개적으로 노출된 자격증명 템플릿(또는 실수로 올라간 크리덴셜) 등을 찾는 데 사용될 수 있음.
+```
+
+### 3) ext:action intext:"Struts Problem Report"
+```
+.action으로 끝나는 URL(예: Struts 프레임워크의 엔드포인트)을 찾고, 페이지 본문에 "Struts Problem Report"(Struts 예외/오류 페이지 텍스트)가 포함된 결과를 찾으려는 구문.
+
+[구문 설명 / 올바른 형태]
+ext:는 일부 검색 엔진에서 filetype:의 대체로 쓰였던 적 있으나, 안정적으로 동작하지 않을 수 있음.
+
+[더 확실한 쿼리]
+inurl:.action intext:"Struts Problem Report"
+-> URL에 .action을 포함하고, 본문에 Struts 오류 메시지가 있는 페이지 검색
+
+[의도/활용]
+Offensive 관점: 공개된 Struts 오류 페이지는 디버그 정보(스택트레이스, 클래스명, 파라미터 등)를 노출할 수 있어 취약점 탐지에 이용됨.
+Defensive 관점: 자사 서비스가 오류 페이지로 민감정보를 노출하는지 확인하는 데 유용.
+```
+
+---
+
+## OSINT를 활용한 정보 수집 단계 - 구글(google) 해킹 이해 (2)
+
