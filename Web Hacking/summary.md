@@ -729,3 +729,29 @@ burpsuite 이용
 ---
 
 ### 웹 해킹 이해 - XSS 취약점 이해
+
+XSS?
+
+공격자  ------  사용자  ------ 악성코드 배포사이트
+악의적인 스크립트 삽입  악성코드 스크립트 실행
+                       악성코드 감염
+                      랜섬웨어 감염 개인정보 유출 등
+
+피싱 사이트 유도
+
+---
+
+### 웹 해킹 이해 - XSS 공격 기법 이해
+
+Stored XSS
+
+Refleced XSS
+
+---
+
+### 웹 해킹 이해 - Stored XSS 취약점 실습
+
+```
+<script>alert(1);</script>
+<script>alert("xss");</script>
+<script>alert(document.cookie);</script>
