@@ -1259,4 +1259,46 @@ neo' and string-length(name(//*))=6 or 'a'='b
 
  ### 시큐어코딩 진단 이해 - 시큐어코딩 진단 오픈 도구 - yasca 활용
 
- 
+ **Yasca는 프레임워크라고 생각하자.**
+ - 예제: cppcheck GUI버전으로 진단
+
+```
+플러그인 종류
+findBugs: CLASS, JAR 소스코드 검사
+PMD: JSP 소스코드 검사
+JLint: JAVA 소스코드 검사
+antic: C/C++ 소스코드 검사
+Javascript Lint: Javascript 소스코드 검사
+PHPLint: PHP4, PHP5 소스코드 검사
+Cppcheck: C, C++ 소스코드 검사
+ClamAV: 악의적인 파일 검사
+Lint4j: JAVA, CLASS 소스코드 검사
+Grep: 분석할 파일의 간단한 패턴을 검사
+```
+
+**시큐어코딩 업무에 도움이 되는 책**
+1. CERT C 프로그래밍
+2. 버그 없는 안전한 소프트웨어를 위한 CERT 자바 프로그래밍
+3. WRITING SECURE CODE 2 안전한 코드 작성 기술
+4. Secure Programming with Static Analysis: with CD-ROM (Paperback)
+
+**안드로이드 시큐어 코딩 참고**
+http://jssec.org/report/android_securecoding_en.html (http://goo.gl/M5Dr6u)
+
+---
+
+### 시큐어코딩 진단 이해 - 시큐어코딩 진단 오픈 도구 - rips 활용
+
+---
+
+### 시큐어코딩 진단 이해 - 시큐어코딩 샘플 소스코드 다운로드 및 관련 책 추천
+
+samate.nist.gov
+
+wiki.sei.cmu.edu
+
+**책 추천**
+1. 버그 없는 안전한 소프트웨어를 위한 CERT C 프로그래밍
+2. jssec.org <- android_securecoding_en.pdf
+
+---
