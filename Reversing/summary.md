@@ -52,3 +52,109 @@ ebp        | 100h | ebp
 
 ## 함수 호출 규약
 
+**간단한 sum 함수의 구조**
+
+```c
+int sum(int a, int b)
+{
+    int c = a + b;
+    return c;
+}
+```
+```assembly
+push ebp
+mov ebp, esp
+push ecx
+mov eax, [ebp+arg_0]
+mov eax, [ebp+arg_4]
+mov [ebp+var_4], eax
+mov eax, [ebp+var_4]
+mov esp, ebp
+pop ebp
+retn
+```
+
+**함수의 호출 규약**
+
+1) cdecl
+
+- 항상 call 문의 다음 줄을 살펴서 스택을 정리하는 곳을 체크한다.
+- cdecl 코드는 call 이후 add esp, 8과 같이 스택을 보정
+- add esp, 8 그리고 push 문이 2개 (4바이트 파라미터가 두 개임을 추측할 수 있음.)
+
+2) stdcall
+
+- main 함수 내부에서 스택을 처리하지 않음
+- stdcall 코드는 retn 8을 사용하여 스택을 처리
+- Win32 API는 stdcall 방식을 사용
+- 2개의 파라미터로 WinExec 함수 호출
+- WinExec 함수 호출 시 프롤로그에서 RETN 8을 발견할 수 있음
+
+3) fastcall
+
+- 파라미터가 2개 이하일 경우, 인자를 push로 넣지 않고 ecx와 edx 레지스터를 이용
+- 레지스터를 이용하기에 메모리를 이용하는 것보다 훨씬 빠름
+- 함수 호출 전, edx와 ecx 레지스터에 값을 넣는 것을 보면 fastcall 규약 함수임을 짐작할 수 있음
+
+4) thiscall
+
+- 주로 C++의 클래스에서 this 포인터로 이용
+- 현재 객체의 포인터에 ecx에 전달하는 특징을 가짐
+- 다음과 같이 ecx 포인터에 오프셋 번지를 더함
+
+파라미터  |   주소
+   a     | ecx + x
+   b     | ecx + y
+   c     | ecx + z
+
+---
+
+## OllyDbg 활용
+
+올리디버거: 올리 유스척이 개발한 x86(32bit) 디버거, 무료, 사용의 편의성, 기능 확장을 위한 플러그인
+
+**실행 파일 열기**
+- 파일 열기
+- 드래그
+- 마우스 오른쪽 키를 사용하여 실행
+- 프로그램 가장 앞단을 0xCC로 패치하여 실행
+
+**실행 중인 프로세스 덧붙이기**
+- File > Attach를 선택
+
+**CPU 인터페이스 - 디스어셈블러 / 레지스터 / 스택 / 덤프 윈도우**
+
+**메모리 맵 - 메모리에 프로그램이 배열 상태 확인 가능**
+
+**View > Therads를 통해 현재 실행 스레드 확인 가능**
+
+- 각 스레드는 개별 스택을 가지고 있음
+
+**OllyDbg 코드 실행 옵션**
+
+- F9: 실행
+- F12: 정지
+- F4: 선택까지 실행
+- Ctrl + F9: 리턴까지 실행
+- F7: 싱글 스텝 / 스텝 인투
+- F8: 스텝 오버
+- Enter: 함수 따라가기
+- F2: 소프트웨 브레이크 포인트
+- Shift + F2: 조건 브레이크 포인트
+
+**DLL 파일 역시 디버깅 가능**
+
+- 디버거에서 직접 실행하지 않고 loaddll.exe라는 더미 프로그램 사용
+
+**DLL을 로드하면 DllMain에서 정지**
+
+**예외 처리**
+
+- Shift + F7/F8/F9
+- Options > Debugging Options > Exceptions
+- 패치
+
+---
+
+## OllyDbg 튜토리얼
+
