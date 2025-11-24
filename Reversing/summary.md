@@ -17,7 +17,7 @@
 ### 리버스 엔지니어링에 필요한 스택 - 함수 프롤로그
 
 ```assembly
-push ebp        # ebp 삽입
+push ebp        // ebp 삽입
 mov ebp, esp    # esp 값을 ebp에 저장
 sub esp, 50h    # esp 50h 위치를 올림(지역 변수 저장 위치)
 ```
