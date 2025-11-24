@@ -17,9 +17,9 @@
 ### 리버스 엔지니어링에 필요한 스택 - 함수 프롤로그
 
 ```assembly
-push ebp        // ebp 삽입
-mov ebp, esp    # esp 값을 ebp에 저장
-sub esp, 50h    # esp 50h 위치를 올림(지역 변수 저장 위치)
+push ebp        ebp 삽입
+mov ebp, esp    esp 값을 ebp에 저장
+sub esp, 50h    esp 50h 위치를 올림(지역 변수 저장 위치)
 ```
 
 ### 함수의 호출 & 리턴 주소
@@ -32,14 +32,14 @@ main()
 }
 ```
 다음과 같이 메인 함수에서 HelloFunction 함수를 호출하면 LIFO 방식으로 스택에 삽입한다.
-```
+```assembly
 [함수 실행시 어셈블리 진행]
 push 39h
 push 38h
 push 37h
 call 401300h; HelloFunction
 ```
-```
+```assembly
 [함수 호출 시 스택 구성]
 ebp + 0x16 | 116h | 39h
 ebp + 0x12 | 112h | 38h
