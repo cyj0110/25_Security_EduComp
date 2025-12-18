@@ -170,7 +170,7 @@ OCR <- 영문만 가능
 2. 사용자 아티팩트: 사용자의 직접적인 행동으로 생성된 흔적, 파일 열기, 웹 검색, 메시지 전송 등
 
 ```
-Windows + R -> ID/PW 입력 -> 접속 시도 -> 접속 성공 ->                  폴더 ->                                              폴더 이동 및 파일 실행             ->                       바탕화면이나 또는 인터넷 유출
+Windows + R -> ID/PW 입력 -> 접속 시도 -> 접속 성공 ->                  폴더                  ->                            폴더 이동 및 파일 실행             ->                       바탕화면이나 또는 인터넷 유출
 ( NTUSER.DAT ) ( EVENTLOG-SECURITY )  ( EVENTLOG )  ( NTUSER.DAT, USRCLASS.DAT, SHELLBAGS ) ( LNK, JUMPLIST, OPENSAVEPIDMRU, RECENTDOCS, BROWSER URL, WINDOWS HISTORY, ...)  ( BROWSER URL, POWERSHELL HISTORY )
     RUNMRU                              원격지 PC            
 ```
@@ -186,20 +186,45 @@ Windows 이벤트 로그: Event ID
 
 실패와 성공 ID는 목적지(대상) PC에 남아 있음.
 
+```
 <Data Name="SubjectUserName">insec</Data>
-
+```
 -> insec이라는 PC에서 
 
+```
 <Data Name="TargetUserName">lab</Data>
-
+```
 -> lab으로 로그인 시도
 
  폴더 접근 흔적은 아티팩트 - 운영체제 - SHELLBAGS에서 조회 가능
  
  파일 실행 흔적은 아티팩트 - 운영체제 - LNK 파일에서 조회 가능
 
- 점프 리스트 흔적은 아티팩트 - 운영체제 - 점프 목록에서 조회 가능 
+```
+드라이브 유형, 대상 파일 생성 날짜/시간
+볼륨 일련번호는 포맷할 때마다 달라짐
+
+```
+
+점프 리스트 흔적은 아티팩트 - 운영체제 - 점프 목록에서 조회 가능 
+```
+ 점프 목록은 최근 실행한 항목을 표시하는 것
+ 액세스 횟수를 따로 표시함
+ 잠재적 앱 이름: Chrome (pdf 파일을 chrome으로 실행) 
+```
  
  인코딩 깨짐은 인코딩 변경 -> 해당 적중 선택 -> korean 
+
+ AXIOM에서 태그는 필터 및 분류를 위해서도 사용하지만, 추후 결과 보고를 위해 뽑아낼때도 사용
+
+ [내보내기 기능]
+
+ HTML, PDF - AXIOM에서 제공하는 타입
+
+ 각종 설정 후 내보내기
+
+ ---
+
+ ## X-Ways Forensics
 
  
