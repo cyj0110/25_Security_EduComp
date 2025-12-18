@@ -1,5 +1,9 @@
 # 사이버 침해사고 분석도구 교육
 
+http://www.forensic-artifacts.com/
+
+포렌식 개념 설명 참고
+
 ## MAGNET AXIOM
 
 ### AXIOM 기본 Setting
@@ -131,7 +135,7 @@ OCR <- 영문만 가능
 
 ---
 
-### AXIOM Examine Artifacts 분석
+### AXIOM Examine 인터페이스
 
 **사전 작업**: 도구 - 커넥션 빌드, 타임 라인 구축
 
@@ -146,6 +150,10 @@ OCR <- 영문만 가능
 
 **COPILOT**: 분석 결과를 Magnet社로 보내줌. 그러나 인터넷 환경 필수
 
+---
+
+### AXIOM Examine Artifacts 분석
+
 **열에서 필터링**: 각 컬럼별 상세 필터링 가능
 
 **Chrome 웹 방문**: URL 필터링: search - 검색어 기록
@@ -156,3 +164,42 @@ OCR <- 영문만 가능
 
 ---
 
+포렌식(디지털 포렌식)에서 **아티팩트(artifact)**란, 사용자의 행위나 시스템 동작으로 인해 디지털 기기 안에 남은 **‘흔적 정보’**를 의미.
+
+1. 시스템 아티팩트: 운영체제나 시스템이 자동으로 생성·관리하는 흔적, 사용자의 의도와 무관하게 시스템 동작 과정에서 남음
+2. 사용자 아티팩트: 사용자의 직접적인 행동으로 생성된 흔적, 파일 열기, 웹 검색, 메시지 전송 등
+
+```
+Windows + R -> ID/PW 입력 -> 접속 시도 -> 접속 성공 ->                  폴더 ->                                              폴더 이동 및 파일 실행             ->                       바탕화면이나 또는 인터넷 유출
+( NTUSER.DAT ) ( EVENTLOG-SECURITY )  ( EVENTLOG )  ( NTUSER.DAT, USRCLASS.DAT, SHELLBAGS ) ( LNK, JUMPLIST, OPENSAVEPIDMRU, RECENTDOCS, BROWSER URL, WINDOWS HISTORY, ...)  ( BROWSER URL, POWERSHELL HISTORY )
+    RUNMRU                              원격지 PC            
+```
+
+아티팩트 - 운영체제 - MRU 실행명령: Win+R 실행 명령들
+ex) \\192.168.0.68: 공유 폴더에 접근
+
+RUNMRU는 Windows 레지스트리에서 사용자가 **‘실행 창(Run)’**에 입력한 명령어 기록을 저장하는 대표적인 사용자 아티팩트
+
+Windows 이벤트 로그: Event ID
+
+로그인 시도(4648), 로그인 실패(4625), 로그인 성공(4624)의 Event ID가 다 다름 - 컬럼 필터링
+
+실패와 성공 ID는 목적지(대상) PC에 남아 있음.
+
+<Data Name="SubjectUserName">insec</Data>
+
+-> insec이라는 PC에서 
+
+<Data Name="TargetUserName">lab</Data>
+
+-> lab으로 로그인 시도
+
+ 폴더 접근 흔적은 아티팩트 - 운영체제 - SHELLBAGS에서 조회 가능
+ 
+ 파일 실행 흔적은 아티팩트 - 운영체제 - LNK 파일에서 조회 가능
+
+ 점프 리스트 흔적은 아티팩트 - 운영체제 - 점프 목록에서 조회 가능 
+ 
+ 인코딩 깨짐은 인코딩 변경 -> 해당 적중 선택 -> korean 
+
+ 
