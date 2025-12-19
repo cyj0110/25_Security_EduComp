@@ -292,3 +292,12 @@ AXIOM은 누구나, X-Way는 파일럿 역량에 따라 결과가 다름
 
 ---
 
+### X-ways 인터페이스 및 필터링
+
+Type Filter
+
+1) NTUSER.DAT
+2) evt - Event log: 기본적으로 분석 불편
+
+X-way에는 Event Log를 자세히 분석할 수 있는 툴이 있음.
+
