@@ -325,5 +325,20 @@ RAID 5: 최소 디스크 개수가 3개 이상부터 사용 가능, 패리티는
 
 ---
 
+### X-ways 내보내기
 
+X-ways는 포터블 지원
 
+X-ways Forensics 폴더에서 Reg Report txt 파일
+
+**[자주 사용하는 필터 적용하기: Type Filter]**
+
+1N 4S (ntuser.dat | sam, security, software, system | (추가)usrclass.dat)
+
+**[viewer에서 내보내기]**
+
+체크 표시 -> Create Report -> Reg Report로 시작하는 txt 파일 지정 -> 경로 지정 후 HTML로 내보내기
+
+Google Drive같은 곳 흔적 조회는 외부 프로그램(ex) sqlite)을 이용해서 조회
+
+---
