@@ -227,4 +227,68 @@ Windows 이벤트 로그: Event ID
 
  ## X-Ways Forensics
 
- 
+C:\Program Files\X-Ways Forensics에서 viewer를 포함한 필수 패키지 세팅 필요, MPlayer는 X
+
+ option - general, viewer programs 세팅
+
+```
+ [general]
+ ✔ Always run as administrator: 실행할 때마다 관리자 권한으로
+ 임시 파일이 저장될 경로
+ 백업이 저장될 경로
+ 케이스와 프로젝트가 저장될 경로
+ ...
+
+ X-Tensions 확장 모듈 형식의 스크립트
+
+ Hash 알고리즘(MD5, SHA256)
+
+ Notation에서 날짜-시간 표시 방법 변경 가능
+```
+```
+[Viewer Programs]
+✔ Activate separate viewer component: X-way 뷰어 연동 필수
+R·V·S(Refine Volume Snapshot): X-way에서 자동으로 정보 수집하는 기능
+```
+
+---
+
+### X-Ways 기본 setting
+
+AXIOM과 다르게 New Case를 생성하는 것이 굉장히 간소화
+
+```
+[New Case]
+Directory: 사건이 저장될 경로
+Description: 사건의 경위
+Examiner(s), User: Me: 패스
+Log 저장 관련: 로그관리가 굉장히 detail 하다 / 활성화 로그가 만들어지는 게 까다로움
+✔ Log general activity
+✔ With screenshots: 옆의 숫자는 클릭 수, 텍스트와 스크린샷을 같이
+Time Zone 세팅 필수: 한국어
+BackUp 관련은 기본 설정으로
+```
+
+설정이 끝나고 증거 자료 File 눌러 추가
+
+AXIOM은 누구나, X-Way는 파일럿 역량에 따라 결과가 다름
+
+```
+[NTFS 파일 시스템 구조]
+||  GPT  |  시스템 예약어  |  VBR  |  Data  |   ...   ||
+```
+전체 크기를 디스크라고 하고, VBR부터 하나의 논리적 단위를 볼륨이라 함.
+
+```
+[Refine Volume Snapshot]
+✔ Run X-Tensions: 조금 더 디테일하게 보기
+✔ Particularly thorough file system data structure search: 010 파일 리더에서 구조체별로 색깔 다르게
+✔ File header signature search: 데이터 카빙 기능, 다른 제품에 비해 빠름
+✔ Block-wise hashing and matching / Identify knwon documents using FuzZyDoc: 유사도 매치, 원본 파일이 있어야 함, 블록마다 해시패턴 적용
+✔ Simulaneous Search: 키워드 서치 / 인덱스 서치는 시간이 더 빠르지만 초기 세팅 시간 있음 / 체크 해제
+✔ Match hash values against hash database(s): 파일 타입을 시그니처로 찾음(예: dll -> exe로 임의 변경 파일)
+✔ Capture sporadic still images from videos: 썸네일 이미지를 다시 동영상(움짤)으로
+```
+
+---
+
