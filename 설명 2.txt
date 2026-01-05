@@ -219,4 +219,65 @@ movsx 스택에서 4번째 인덱스에 저장된 값을 가져와 ecx에 저장
 cmp ecx, 7B -> ecx를 0x7B와 비교, 즉. '{'
 아까 4번째 인덱스는 확인했기 때문에 ZF만 변경하고 넘어감.
 
-### 
+### 8번째 인덱스
+mov dword ... ebp-8 위치에 E를 복사해서 저장
+점프해서 넘어감
+mov edx, 1 -> edx에 1을 복사해서 저장.
+shl edx, 3 -> edx에 저장된 값을 왼쪽으로 3칸 시프트 연산 0001(2) -> 1000(2) = 8(10), edx = '8'
+movsx 스택에서 8번째 저장된 값을 eax에 저장. -> eax = '9'
+mov ecx, 1 -> ecx에 1을 복사해서 저장.
+imul edx, ecx, A -> edx에 ecx와 'A'를 곱해서 저장. -> edx = 'A' (A는 10진수로 10)
+movsx 스택에서 10번째 인덱스에 있는 값을 가져와 ecx에 저장. -> ecx = '1'
+xor eax, ecx -> eax와 ecx를 xor 연산을 해서 eax에 저장
+xor eax, dword ptr ss:[ebp-8] -> 3개를 xor 한 값이 0이 되어야 결과가 0, jump하지 않게 됨.
+
+A[8] ^ E(0x0E) ^ m(0x6D) = 0
+A[8] ^ 0x63 = 0
+A[8] = 0x63 ('c')
+
+(메모장 켜서 스택의 8번째 인덱스가 'c'임을 표시.)
+jne에서 의도적으로 ZF를 1로 바꿔줌.
+
+### 7번째 인덱스
+mov edx, 1 -> edx에 1을 복사해서 저장.
+imul eax, edx, 7 -> eax에 edx와 '7'을 곱한 값을 저장 -> eax = '7'
+movsx 스택에서 7번째 저장된 값을 ecx에 저장. -> ecx = '8'
+cmp ecx, 6C -> ecx와 6C를 비교, 즉. 'l'
+(메모장 켜서 스택의 7번째 인덱스가 'l'임을 표시.)
+jne에서 의도적으로 ZF를 1로 바꿔줌.
+
+### 11번째 인덱스
+mov edx, 1 -> edx에 1을 복사해서 저장.
+imul eax, edx, B -> edx와 B를 곱한 값을 eax에 저장. -> eax = 'B' (B는 10진수로 11)
+movsx 스택에서 11번째 인덱스에 저장된 값을 ecx에 저장. -> ecx = '2'
+mov edx, 1 -> edx에 1을 복사해서 저장.
+imul eax, edx, 6 -> edx와 6을 곱한 값을 eax에 저장. -> eax = '6'
+movsx 스택에서 6번째 인덱스에 저장된 값을 edx에 저장. -> edx = '7'
+cmp ecx, edx -> ecx와 edx를 비교해서 jump할지 말지 결정. 즉 6번째 인덱스의 값은 알고 있으므로 A[11] = '3'
+
+### 12번째 인덱스
+mov eax, 1 -> eax에 1을 복사해서 저장.
+imul ecx, eax, C -> eax와 C를 곱한 값을 ecx에 저장. -> ecx = 'C' (C는 10진수로 12)
+movsx 스택에서 12번째 인덱스에 저장된 값을 edx에 저장. -> edx = '3'
+cmp edx, 5E -> edx를 0x5E와 비교해서 jump할지 말지 결정.
+jle -> jump less equal 앞에 나온 결과와 비교해서 작거나 같으면 점프. 점프가 되면 안되기 때문에 커야함.
+0x5E 보다 커야함. ZF = 0, SF = 0 맞춰주고 내려감.
+
+mov eax, 1 -> eax에 1을 복사해서 저장.
+imul ecx, eax, C -> eax와 C를 곱한 값을 ecx에 저장. -> ecx = 'C' (C는 10진수로 12)
+movsx 스택에서 12번째 인덱스에 저장된 값을 edx에 저장. -> edx = '3'
+cmp edx, 60 -> edx를 0x60와 비교해서 jump할지 말지 결정.
+jge -> jump greater equal 앞에 나온 결과와 비교해서 크거나 같으면 점프. 점프가 되면 안되기 때문에 작아야함.
+0x60보다 작아야함. ZF = 0, SF = 0 맞춰주고 내려감.
+
+0x5E < A[12] < 0x60
+
+A[12] = 0x5F. 즉, '_'
+
+(메모장 켜서 스택의 12번째 인덱스가 '_'임을 표시.)
+
+
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+c a d t  { w 3 l c 0  m  3   _   r  3   v   }
+
+실제 cmd 창에 입력해보고 종료.
