@@ -1,4 +1,4 @@
-# Security EduComp - 시스템 해킹
+# Security EduComp - 시스템 해킹과 리버싱
 
 ## 어셈블리 명령어와 함수 호출 구조
 
