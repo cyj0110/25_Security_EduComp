@@ -21,12 +21,12 @@ https://www.exploit-db.com
 
 ### search
 
-```sh
-msf> search portscan
+```
+msf > search portscan
 ```
 -공격 모듈 찾아보기
 
-```sh
+```
 msf > info [num]
 ```
 -해당 모듈 넘버로 정보 조회
@@ -38,8 +38,8 @@ msf > use [num]
 ```
 -해당 모듈 사용
 
-```sh
-msf> show options
+```
+msf > show options
 ```
 -옵션을 보는 방법
 
@@ -51,25 +51,25 @@ RHOSTS: Remote Hosts의 주소를 적음
 THREADS: 너무 많이 사용할 경우 CPU 과부하, 정확성 떨어짐
 ```
 
-```sh
-msf> set RHOSTS [ip]
+```
+msf > set RHOSTS [ip]
 ```
 -RHOSTS 지정
 
-```sh
-msf> set THREADS 10
+```
+msf > set THREADS 10
 ```
 -Threads 개수 지정
 
-```sh
-msf> exploit
+```
+msf > exploit
 ```
 -툴 시작
 
 ### show
 
-```sh
-msf> services
+```
+msf > services
 ```
 -스캔 내용 확인
 
