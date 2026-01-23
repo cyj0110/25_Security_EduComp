@@ -75,3 +75,44 @@ msf > services
 
 ---
 
+## FTP 버전정보 및 익명 연결 확인
+
+```
+msf > search ftp_version
+```
+-FTP Version 확인
+
+```
+msf > setg RHOSTS [ip]
+```
+-setg: global한 전역 설정
+
+```
+msf > getg RHOSTS
+```
+-getg: getg로 전역 설정 확인
+
+```
+msf > run
+```
+-메타스플로잇 실행
+
+```
+msf > serach ftp/anonymous
+```
+-ftp/anonymous 검색
+
+```
+msf > use [num]
+```
+-사용할 num 선택
+
+```
+msf > exploit
+```
+-exploit 시작
+
+---
+
+## FTP 무작위 대입 공격 및 와이어샤크 패킷 확인
+
