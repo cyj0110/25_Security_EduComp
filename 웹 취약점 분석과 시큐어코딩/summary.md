@@ -231,3 +231,35 @@ msf > exploit
 
 ## Tomcat 관리자 페이지 계정 추측 및 웹쉘 업로드
 
+8180/tcp open http Apache Tomcat/Coyote JSP engine 1.1
+
+Apache Tomcat: WAS(동적인 페이지)
+
+```sh
+sudo nikto -h http://192.168.81.130:8180/
+```
+-Tomcat Manager 같은 페이지 등의 취약점 분석
+
+/manager/html: 관리자 ID, PW는 Tomcat/Tomcat으로 추출됨.
+
+관리자 페이지에서 WAR 파일을 업로드 하는 영역이 있다.
+
+해당 페이지는 jsp 기반으로 만들어진 웹 서비스임을 확인할 수 있고,
+
+kali의 /usr/share/webshells/jsp 경로에는 jsp 취약점을 이용해 웹 쉘을 업로드하고, 그 웹 쉘을 이용해 원격으로 쉘을 장악할 수 있는 기능이 있는 소스코드가 있다.
+
+- cmdjsp.jsp: Linux 전용 웹 쉘 소스 코드
+- jsp-reverse.jsp: Windows 전용 웹 쉘 소스 코드
+
+두 파일을 zip -r shell.war . 명령어로 war파일 형식으로 압축을 진행한 후에
+
+해당 페이지에서 war 파일을 업로드 한 후, Deploy를 누르면 /shell 이라고 하는 새로운 페이지가 생성되고, 해당 경로를 URL에 입력 후 
+
+http://192.168.81.130:8180/shell/cmdjsp.jsp?cmd=
+
+cmd 인자에 Linux 명령어를 실행하면 해당 명령어가 실행된 결과가 페이지에 나타난다.
+
+---
+
+## 메타스플로잇을 활용한 Tomcat 관리자 계정 무작위 대입 공격 자동화
+
