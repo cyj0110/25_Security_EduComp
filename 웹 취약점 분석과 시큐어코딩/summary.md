@@ -339,3 +339,123 @@ meterpreter > download /var/www/twiki/readme.txt
 
 ## 메타스플로잇을 활용한 VNC 무작위 대입공격 원격 접속 성공
 
+**VNC란?**
+
+- VNC(Virtual Network Computing):
+    - 원격 데스크톱 접속을 위한 프로토콜 및 소프트웨어.
+    - 클라이언트와 서버 간 그래픽 사용자 인터페이스(GUI)를 공유하여 원격 시스템 제어 가능.
+    - 기본 포트: 5900/TCP (표준 VNC 포트, 디스플레이 번호에 따라 5901, 5902 등 사용).
+    - 대표적인 구현: TightVNC, UltraVNC, RealVNC.
+- 동작 원리:
+    - VNC 서버가 원격 시스템에서 실행되며, 클라이언트가 접속하여 화면, 키보드, 마우스 입력을 전송.
+    - 인증 방식: 비밀번호 기반 (기본적으로 약한 암호화 또는 비암호화).
+- 사용 사례:
+    - IT 관리, 원격 지원, 서버 관리.
+ 
+**VNC의 보안 취약점**
+
+- 취약점 유형:
+    1. 약한 비밀번호:
+        - 기본 비밀번호(null, 빈 비밀번호) 또는 쉽게 추측 가능한 비밀번호 사용.
+        - Metasploitable 2의 VNC는 기본적으로 비밀번호가 취약하거나 설정되지 않은 경우가 많음.
+    2. 브루트 포스 공격:
+        - VNC 인증이 비밀번호 기반이므로 무차별 대입 공격에 취약.
+    3. 구형 VNC 버전:
+        - 오래된 VNC 소프트웨어는 알려진 취약점(CVE)을 포함.
+        - 예: CVE-2006-2369 (RealVNC 인증 우회 취약점).
+    4. 암호화 부족:
+        - 기본 VNC는 데이터 전송 시 암호화가 약하거나 없음(스니핑 가능).
+    5. 구성 오류:
+        - 방화벽 설정 미흡, 불필요한 VNC 서비스 노출.
+
+```
+msf6 > use auxiliary(scanner/vnc/vnc_login)
+```
+-vnc 툴 사용
+
+```
+msf6 > set RHOSTS [ip]
+msf6 > set THREADS 5
+msf6 > exploit
+```
+-설정 후, exploit
+
+```shell
+sudo vncviewer
+```
+
+vnc server의 비밀번호를 입력하면 GUI 환경에서 원격으로 metasploitable Shell 사용 가능
+
+---
+
+## NFS 취약점 탐색 및 원격 접속 사례
+
+**NFS란?**
+
+- NFS(Network File System):
+    - 네트워크를 통해 원격 시스템의 파일 시스템을 로컬처럼 마운트하여 접근 가능하게 하는 프로토콜.
+    - 주로 유닉스/리눅스 환경에서 사용.
+    - 기본 포트: 2049/TCP (NFS 데몬), 111/TCP (rpcbind/portmapper).
+    - 개발: Sun Microsystems (1984년).
+- 동작 원리:
+    - NFS 서버가 파일 시스템 디렉토리를 내보내기(export) 설정.
+    - 클라이언트가 해당 디렉토리를 마운트하여 파일 읽기/쓰기 가능.
+    - 인증: 기본적으로 UID/GID 기반 (IP 또는 호스트 기반 접근 제어).
+- 사용 사례:
+    - 공유 파일 시스템, 데이터 백업, 분산 컴퓨팅 환경.
+
+**NFS의 보안 취약점**
+
+- 취약점 유형:
+    1. 잘못된 내보내기 설정:
+        - NFS 서버가 루트 디렉토리(/) 또는 민감한 디렉토리를 모든 클라이언트(*)에 내보내기.
+        - 읽기/쓰기 권한(rw) 부여 시 파일 수정 가능.
+        - Metasploitable 2는 /tmp 또는 /home 디렉토리를 제한 없이 내보내기.
+    2. 루트 스쿼시(root_squash) 비활성화:
+        - no_root_squash 설정 시 클라이언트의 루트 사용자가 서버의 루트 권한으로 파일 접근 가능.
+        - 공격자가 루트 권한으로 악성 파일 업로드 가능.
+    3. 약한 인증:
+        - NFS는 기본적으로 IP 기반 인증 사용 (스푸핑 가능).
+        - Kerberos 등 강력한 인증 미적용 시 취약.
+    4. 구형 NFS 버전:
+        - NFSv2/v3은 암호화 부족, 알려진 취약점 포함 (예: CVE-1999-0548, NFS 익스플로잇).
+    5. rpcbind 취약점:
+        - 포트 111에서 실행되는 rpcbind 서비스가 NFS 관련 정보 노출.
+- Metasploitable 2의 NFS 취약점:
+    - NFS 서버가 /tmp 디렉토리를 no_root_squash와 *로 내보내기.
+    - 공격자가 마운트 후 임의 파일 업로드 및 실행 가능.
+    - 익스플로잇 가능한 모듈: Metasploit의 auxiliary/scanner/nfs/nfsmount.
+ 
+```
+msf6 > use auxiliary(scanner/nfs/nsfmount)
+```
+-nfs 툴 사용
+
+```
+msf6 > set RHOSTS [ip]
+msf6 > exploit
+```
+-설정 후, exploit
+
+```shell
+sudo showmount -e [ip]
+```
+
+```
+sudo mkdir /mnt/nfs_test
+```
+
+```shell
+sudo mount -t nfs [ip]:/tmp /mnt/nfs_test
+```
+-mkdir로 단순히 nfs_test 폴더만 만들었음.
+-그런데 디렉터리를 확인해보면 파일이 들어와 있는 것을 확인할 수 있음.
+-mount를 통해 원격으로 파일을 받아옴
+
+1. 원격으로 접속해 내부 시스템 정찰 가능
+2. 원격으로 접속한 자산에서 또 다른 자산 연동 접점 확인 & 백도어 설치 가능
+
+---
+
+## webdav 취약점 분석 사례
+
