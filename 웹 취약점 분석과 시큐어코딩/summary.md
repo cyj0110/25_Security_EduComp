@@ -657,7 +657,73 @@ keyscan
 즉, 이 애플리케이션은 악용할 수 있는 취약점을 의도적으로 노출하고 있다.
 -crAPI는 다양한 기술을 활용하여 개발된 다음 서비스로 구성된 마이크로서비스 아키텍처를 갖추고 있다.
 
+실습
+
 ---
 
 ## crAPI 도커 웹 환경 해킹 (2) - 버프스위트 설정
 
+프록시 설정
+
+실습
+
+---
+
+## crAPI 도커 웹 환경 해킹 (3) - 다른 사용자 정보에 액세스하기 1
+
+```
+response interception rule 추가
+(text | application | json | html | xml | x-javascript)
+```
+범위 내의 정보를 제공하는지 확인 <- 취약점 확인
+
+다른 사용자의 위치 정보를 사용할 수 있는가?
+
+실습
+
+---
+
+## crAPI 도커 웹 환경 해킹 (4) - 다른 사용자 정보에 액세스하기 2
+
+내가 입력한 정보가 POST로 전달됨.
+
+"report_link" 값의 report_id를 수정하면 될까?
+
+"JWT Token Required!" 메시지 출력
+
+```
+Authorization: Bearer
+ey ~
+```
+해당 값으로 JWT 토큰 인증이 이루어짐.
+
+다른 사용자가 보냈던 내용을 조회할 수 있음.
+
+실습
+
+---
+
+## crAPI 도커 웹 환경 해킹 (5) - 다른 사용자 정보 삭제하기
+
+Allow PUT, DELETE, GET, HEAD, OPTIONS
+
+user를 admin으로 변경
+
+Admin 권한으로 실행 가능
+
+실습
+
+---
+
+## crAPI 도커 웹 환경 해킹 (6) - 상품 가격 변조하기
+
+{"id": ~,
+"message": ~,
+"credit": ~
+}
+
+credit 값 변조로 상품 가격 변조할 수 있음.
+
+실습
+
+---
